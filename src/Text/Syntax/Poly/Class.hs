@@ -1,4 +1,10 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE CPP #-}
+
+#if __GLASGOW_HASKELL__ == 708
+{-# OPTIONS_GHC -fno-warn-amp #-}
+#endif
 
 -- |
 -- Module      : Text.Syntax.Poly.Class
@@ -57,6 +63,6 @@ class (IsoFunctor delta, ProductFunctor delta,
   syntaxError =  const empty
 
 -- | Syntax abstraction with token type @tok@.
-class AbstractSyntax delta => Syntax tok delta where
+class AbstractSyntax delta => Syntax tok delta | delta -> tok where
   -- | Get a token from stream.
   token :: delta tok

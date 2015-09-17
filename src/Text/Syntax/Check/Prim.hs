@@ -17,9 +17,8 @@ module Text.Syntax.Check.Prim (
   ) where
 
 import Text.Syntax.Poly.Type (SyntaxT, RunAsParser, RunAsPrinter)
-
 import Text.Syntax.Printer.List (runAsPrinter)
-import Text.Syntax.Parser.List.LazyMaybe  (runAsParser)
+import Text.Syntax.Parser.List.LazyMaybe (runAsParser)
 
 -- | Run print and parse series, then check the equality between input and output.
 printParseIso0 :: (Eq a, Show e0, Show e1) =>

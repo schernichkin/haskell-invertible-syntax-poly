@@ -1,5 +1,5 @@
 name:                invertible-syntax-poly
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Extends invertible-syntax library
                      capable to use parameterized token type.
 description:         Extends invertible-syntax library
@@ -12,7 +12,7 @@ maintainer:          Kei Hibino <ex8k.hibino@gmail.com>
 category:            Text
 stability:           experimental
 build-type:          Simple
-cabal-version:       >=1.2
+cabal-version:       >=1.6
 
 library
   hs-source-dirs:       src
@@ -40,7 +40,8 @@ library
   
   build-depends:        base < 5
                       , partial-isomorphisms
-  
+
+  ghc-options:          -Wall  
 
 source-repository head
   type:     git

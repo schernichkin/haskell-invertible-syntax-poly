@@ -1,5 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Text.Syntax.Printer.List
@@ -29,6 +30,10 @@ import Text.Syntax.Poly.Class
    AbstractSyntax (syntax), Syntax (token))
 import Text.Syntax.Poly.Type (ErrorString, errorString)
 import qualified Text.Syntax.Poly.Type as T
+
+#if __GLASGOW_HASKELL__ >= 710
+import Prelude hiding ((<$>), (<*>))
+#endif
 
 -- | Naive 'Printer' type. Print @alpha@ into @[tok]@.
 newtype Printer tok alpha =

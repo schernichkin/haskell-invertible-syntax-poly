@@ -1,6 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Text.Syntax.Parser.List.StrictMaybe
@@ -19,7 +20,12 @@ module Text.Syntax.Parser.List.StrictMaybe (
   runAsParser
   ) where
 
-import Control.Monad (MonadPlus(mzero, mplus))
+import Control.Applicative (Alternative(empty, (<|>)))
+import Control.Monad (MonadPlus(mzero, mplus), ap, liftM)
+
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative (Applicative(pure, (<*>)))
+#endif
 
 import Text.Syntax.Parser.Instances ()
 import Text.Syntax.Poly.Class
@@ -36,6 +42,13 @@ newtype Parser tok alpha =
     runParser :: [tok] -> Result alpha tok
     }
 
+instance Functor (Parser tok) where
+  fmap = liftM
+
+instance Applicative (Parser tok) where
+  pure  = return
+  (<*>) = ap
+
 instance Monad (Parser tok) where
   return !a = Parser $ \s -> Good a s
   Parser p >>= fb = Parser (\s -> case p s of
@@ -44,6 +57,10 @@ instance Monad (Parser tok) where
                                  Bad              -> Bad
                                Bad                -> Bad)
   fail = const mzero
+
+instance Alternative (Parser tok) where
+  empty = mzero
+  (<|>) = mplus
 
 instance MonadPlus (Parser tok) where
   mzero = Parser $ const Bad

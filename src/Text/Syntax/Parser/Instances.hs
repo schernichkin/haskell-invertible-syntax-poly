@@ -1,5 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE CPP #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
 -- Module      : Text.Syntax.Parser.Instances
@@ -18,6 +20,10 @@ import Control.Monad (MonadPlus (mzero))
 
 import Control.Isomorphism.Partial.Ext.Prim (apply')
 import Text.Syntax.Poly.Instances ()
+
+#if __GLASGOW_HASKELL__ >= 710
+import Prelude hiding ((<$>))
+#endif
 
 -- | 'IsoFunctor' instance for parsers on 'MonadPlus' context
 instance MonadPlus m => IsoFunctor m where

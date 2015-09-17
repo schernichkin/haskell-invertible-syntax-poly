@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Text.Syntax.Poly.Combinators
@@ -37,7 +38,11 @@ module Text.Syntax.Poly.Combinators (
   format
   ) where
 
+#if __GLASGOW_HASKELL__ < 710
 import Prelude hiding (foldl, succ, replicate, (.))
+#else
+import Prelude hiding (foldl, succ, replicate, (.), (<$>), (<*>), (<*), (*>))
+#endif
 
 import Control.Isomorphism.Partial.Ext
   (nothing, just, nil, cons, left, right, foldl,

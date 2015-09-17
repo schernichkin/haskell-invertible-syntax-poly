@@ -1,6 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Text.Syntax.Parser.List.Compose
@@ -20,7 +21,12 @@ module Text.Syntax.Parser.List.Compose (
   runAsParser
   ) where
 
-import Control.Monad (MonadPlus(mzero, mplus))
+import Control.Applicative (Alternative(empty, (<|>)))
+import Control.Monad (MonadPlus(mzero, mplus), ap, liftM)
+
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative (Applicative(pure, (<*>)))
+#endif
 
 import Text.Syntax.Parser.Instances ()
 import Text.Syntax.Poly.Class
@@ -55,10 +61,21 @@ runParser p0 s0 = let z = d p0 s0 in z `seq` z  where
       Bad           -> runParser p2 s
       r1@(Good _ _) -> r1
 
+instance Functor (Parser tok) where
+  fmap = liftM
+
+instance Applicative (Parser tok) where
+  pure  = return
+  (<*>) = ap
+
 instance Monad (Parser tok) where
   return = Prim . Good
   (>>=)  = (:>>=)
   fail = const mzero
+
+instance Alternative (Parser tok) where
+  empty = mzero
+  (<|>) = mplus
 
 instance MonadPlus (Parser tok) where
   mzero = Prim $ const Bad

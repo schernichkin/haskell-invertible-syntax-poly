@@ -1,5 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE CPP #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
 -- Module      : Text.Syntax.Poly.Instances
@@ -20,6 +22,10 @@ import Text.Syntax.Poly.Class
   (ProductFunctor((<*>)),
    IsoAlternative((<||>), empty), TryAlternative,
    AbstractSyntax(syntax, syntaxError))
+
+#if __GLASGOW_HASKELL__ >= 710
+import Prelude hiding ((<*>))
+#endif
 
 -- | 'ProductFunctor' instance on 'Monad' context
 -- which is a prerequisite for 'Syntax' definitions.

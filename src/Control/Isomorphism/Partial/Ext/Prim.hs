@@ -15,10 +15,7 @@ module Control.Isomorphism.Partial.Ext.Prim (
   mayPrepend', (?||), mayPrepend
   ) where
 
-
-
 import Prelude hiding (id)
-import qualified Prelude as P
 import Control.Category (id)
 import Control.Isomorphism.Partial.Prim (inverse, apply, unapply)
 import Control.Isomorphism.Partial.Unsafe (Iso (Iso))

@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE CPP #-}
 
 -- |
 -- Module      : Text.Syntax.Poly.Combinators.Char
@@ -22,6 +23,9 @@ module Text.Syntax.Poly.Combinators.Char (
   optSpace
   ) where
 
+#if __GLASGOW_HASKELL__ >= 710
+import Prelude hiding ((<$>), (<*))
+#endif
 import Data.Char (isSpace)
 import Control.Isomorphism.Partial.Prim ((<$>), ignore, subset)
 import Text.Syntax.Poly.Class (Syntax, syntax, token)
